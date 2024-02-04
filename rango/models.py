@@ -3,14 +3,15 @@ from django.template.defaultfilters import slugify
 
 # Create your models here.
 class Category(models.Model):
+    NAME_MAX_LENGTH =128
     name = models.CharField(max_length=128, unique=True)
     views = models.IntegerField(default = 0)
     likes = models.IntegerField(default = 0)
     slug = models.SlugField(unique = True)
 
     def save( self, *args, **kwargs):
-         self.slug = slugify(self.name)
-         super(Category, self).save(*args, **kwargs)
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
 
 
     class Meta:
@@ -20,8 +21,11 @@ class Category(models.Model):
             return self.name
 
 class Page(models.Model):
+    TITLE_MAX_LENGTH = 128
+    URL_MAX_LENGTH = 200
+    
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=TITLE_MAX_LENGTH)
     url = models.URLField()
     views = models.IntegerField(default=0)
     
